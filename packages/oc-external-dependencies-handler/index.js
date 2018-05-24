@@ -12,9 +12,10 @@ const coreModules = require('builtin-modules');
 const strings = require('oc-templates-messages');
 const _ = require('lodash');
 
-module.exports = dependencies => {
+module.exports = ({ dependencies, devDependencies }) => {
   const deps = dependencies || {};
 
+  console.log(devDependencies);
   const missingExternalDependency = (dep, dependencies) =>
     !_.includes(_.keys(dependencies), dep) && !_.includes(coreModules, dep);
 

@@ -26,7 +26,9 @@ test('When a module/path is being used withough being declared in the package', 
 });
 
 test('When a module declared in the package is being used', done => {
-  const handler = externalDependenciesHandler({ lodash: '4.17.4' });
+  const handler = externalDependenciesHandler({
+    dependencies: { lodash: '4.17.4' }
+  });
   const handlerFunction = handler[0];
   handlerFunction(null, 'lodash', err => {
     expect(err).toBeUndefined();
@@ -35,7 +37,7 @@ test('When a module declared in the package is being used', done => {
 });
 
 test('When a module is a node core dependency', done => {
-  const handler = externalDependenciesHandler();
+  const handler = externalDependenciesHandler({});
   const handlerFunction = handler[0];
   handlerFunction(null, 'url', err => {
     expect(err).toBeUndefined();
@@ -44,7 +46,9 @@ test('When a module is a node core dependency', done => {
 });
 
 test('The handler matcher should correctly match aganinst valid modules', () => {
-  const handler = externalDependenciesHandler({ lodash: '4.17.4' });
+  const handler = externalDependenciesHandler({
+    dependencies: { lodash: '4.17.4' }
+  });
   const handlerMatcher = handler[1];
   expect(handlerMatcher).toBeInstanceOf(RegExp);
   expect(handlerMatcher.test('lodash')).toBe(true);
@@ -56,7 +60,9 @@ test('The handler matcher should correctly match aganinst valid modules', () => 
 });
 
 test('The handler matcher should correctly match aganinst not valid modules', () => {
-  const handler = externalDependenciesHandler({ lodash: '4.17.4' });
+  const handler = externalDependenciesHandler({
+    dependencies: { lodash: '4.17.4' }
+  });
   const handlerMatcher = handler[1];
   expect(handlerMatcher).toBeInstanceOf(RegExp);
   expect(handlerMatcher.test('/myModule')).toBe(false);

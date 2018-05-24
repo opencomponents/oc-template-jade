@@ -13,6 +13,8 @@ module.exports = function webpackConfigGenerator(options) {
   const sourceMaps = !production;
   const devtool = sourceMaps ? '#source-map' : '';
 
+  const { dependencies, devDependencies } = options;
+
   const jsLoaders = [
     {
       loader: require.resolve('babel-loader'),
@@ -56,6 +58,13 @@ module.exports = function webpackConfigGenerator(options) {
   }
 
   return {
+    mode: production ? 'production' : 'development',
+    optimization: {
+      // https://webpack.js.org/configuration/optimization/
+      // Override production mode optimization for minification
+      // As it currently breakes the build, still rely on babel-minify-webpack-plugin instead
+      minimize: false
+    },
     devtool,
     entry: options.serverPath,
     target: 'node',
@@ -66,7 +75,7 @@ module.exports = function webpackConfigGenerator(options) {
       devtoolModuleFilenameTemplate: '[absolute-resource-path]',
       devtoolFallbackModuleFilenameTemplate: '[absolute-resource-path]?[hash]'
     },
-    externals: externalDependenciesHandlers(options.dependencies),
+    externals: externalDependenciesHandlers({ dependencies, devDependencies }),
     module: {
       rules: [
         {
